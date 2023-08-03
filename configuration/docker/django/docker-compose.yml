@@ -1,0 +1,29 @@
+version: "3.1"
+services:
+  backend_db:
+    image: postgres
+    container_name: psql_server
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123
+    restart: unless-stopped
+    networks:
+      - vnet1
+
+  backend_app:
+    image: dachirkov/django_app
+    container_name: django_server
+    volumes:
+      - "/mnt/django/project0001:/usr/src/app/project0001"
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - vnet1
+    depends_on:
+      - backend_db
+
+networks:
+  vnet1:
+    driver: bridge
