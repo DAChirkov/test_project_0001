@@ -6,21 +6,30 @@
   remote_user: azroot
 
   tasks:
-    - name: Create a New Directory
-      file:
-        path: /mnt/django
-        state: directory
-        mode: "0755"
+    - name: Delete Docker Containers
+      shell: |
+        sudo docker compose -f /home/temp/repo/configuration/docker/django/docker-compose.yml down
 
-    - name: Copy Configuration
-      copy:
-        remote_src: yes
-        directory_mode: yes
-        src: /home/temp/repo/configuration/django/
-        dest: /mnt/django
+    - name: Wait for a few seconds
+      pause:
+        seconds: 30
+
+    - name: Delete Images
+      shell: |
+        sudo docker image prune --all --force
+
+    - name: Wait for a few seconds
+      pause:
+        seconds: 10
 
     - name: Start Docker Containers
-      shell: sudo docker compose -f /home/temp/repo/configuration/docker/django/docker-compose.yml up -d
+      shell: |
+        sudo docker compose -f /home/temp/repo/configuration/docker/django/docker-compose.yml up -d
 
-    - name: Applying configurations
-      shell: sudo docker exec -d django_server python manage.py runserver 0.0.0.0:8000 --noreload
+    - name: Wait for a few seconds
+      pause:
+        seconds: 10
+
+    - name: Restart Django
+      shell: |
+        sudo docker exec -d django_server python manage.py runserver 0.0.0.0:8000 --noreload

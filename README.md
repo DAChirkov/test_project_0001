@@ -25,4 +25,9 @@ Step3 - Create a Storage Account
 --------
 AZURE_STORAGE_SECRET: secret value of your storage account
 >>> \pre-requisites\terraform\Service_storage.ps1
+
+Step4 - Add Docker's Secrets  
+--------
+DOCKER_USERNAME: secret value of your repo
+DOCKER_PASSWORD: secret value of your token
 ```

@@ -3,7 +3,7 @@ on:
   workflow_dispatch:      
   workflow_run:
     workflows:
-      - "Azure_Deploy Infrastructure"
+      - "Docker Hub_Push Django Image"
     types:
       - completed
 
